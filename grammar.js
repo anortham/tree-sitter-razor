@@ -448,7 +448,7 @@ module.exports = grammar(CSHARP, {
         seq(
           choice(
             "attributes",
-            "bind",
+            token(prec(10, /bind(-[A-Za-z_][A-Za-z0-9_]*)?/)),
             "formname",
             token(prec(10, /on[a-z]+/i)),
             "key",
@@ -467,8 +467,9 @@ module.exports = grammar(CSHARP, {
     // HTML Base Definitions
     _tag_name: (_) => /[a-zA-Z0-9-:]+/,
     _end_tag: ($) => seq("</", $._tag_name, ">"),
-    _html_attribute_name: (_) => /[a-zA-Z0-9-:]+/,
-    _boolean_html_attribute: (_) => /[a-zA-Z0-9-:]+/,
+    _html_attribute_name: (_) => /[a-z][a-zA-Z0-9-:]*/,
+    _boolean_html_attribute: (_) => /[a-z][a-zA-Z0-9-:]*/,
+    _component_attribute_name: (_) => /[A-Z][a-zA-Z0-9-:]*/,
     _html_attribute_value: ($) =>
       seq(
         '"',
@@ -489,6 +490,19 @@ module.exports = grammar(CSHARP, {
     _html_attribute: ($) =>
       seq($._html_attribute_name, "=", $._html_attribute_value),
 
+    component_attribute_value: ($) =>
+      choice(
+        token(prec(20, '""')),
+        seq('"', prec.dynamic(2, $.expression), '"'),
+        seq('"', /[^"@]+/, '"'),
+      ),
+
+    component_attribute: ($) =>
+      seq(
+        $._component_attribute_name,
+        optional(seq("=", $.component_attribute_value)),
+      ),
+
     razor_html_attribute: ($) =>
       seq($.razor_attribute_name, optional(seq("=", $.razor_attribute_value))),
 
@@ -504,6 +518,7 @@ module.exports = grammar(CSHARP, {
                   $._html_attribute,
                   $._boolean_html_attribute,
                   $.razor_html_attribute,
+                  $.component_attribute,
                 ),
                 optional(" "),
               ),
