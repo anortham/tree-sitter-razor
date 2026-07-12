@@ -1,0 +1,121 @@
+==============================
+Generic component type attributes covered by 07eab9c
+==============================
+
+<FluentSelect TOption="string" TValue="string" />
+
+---
+
+(compilation_unit
+  (element
+    (component_attribute
+      (component_attribute_value
+        (predefined_type)))
+    (component_attribute
+      (component_attribute_value
+        (predefined_type)))))
+
+==============================
+Custom rendermode directive
+==============================
+
+@rendermode InteractiveServerWithoutPrerendering
+
+---
+
+(compilation_unit
+  (razor_rendermode_directive
+    (razor_rendermode
+      (identifier))))
+
+==============================
+Explicit rendermode directive
+==============================
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+---
+
+(compilation_unit
+  (razor_rendermode_directive
+    (razor_rendermode
+      (razor_explicit_expression
+        (parenthesized_expression
+          (object_creation_expression
+            (identifier)
+            (argument_list
+              (argument
+                (name_colon
+                  (identifier))
+                (boolean_literal)))))))))
+
+==============================
+Custom component rendermode attribute
+==============================
+
+<Routes @rendermode="@PageRenderMode" />
+
+---
+
+(compilation_unit
+  (element
+    (razor_html_attribute
+      (razor_attribute_name)
+      (razor_attribute_value
+        (razor_implicit_expression
+          (identifier)))))))
+
+==============================
+Constrained type parameter
+==============================
+
+@typeparam TItem where TItem : IEntity, new()
+
+---
+
+(compilation_unit
+  (razor_typeparam_directive
+    (identifier)
+    (type_parameter_constraints_clause
+      (identifier)
+      (type_parameter_constraint
+        (identifier))
+      (constructor_constraint))))
+
+==============================
+Render fragment literal in switch expression
+==============================
+
+@code {
+    RenderFragment? Badge(State state) => state switch
+    {
+        State.Ready => @<FluentBadge>Ready</FluentBadge>,
+        _ => null,
+    };
+}
+
+---
+
+(compilation_unit
+  (razor_block
+    (local_function_statement
+      (nullable_type
+        (identifier))
+      (identifier)
+      (parameter_list
+        (parameter
+          (identifier)
+          (identifier)))
+      (arrow_expression_clause
+        (switch_expression
+          (identifier)
+          (switch_expression_arm
+            (constant_pattern
+              (member_access_expression
+                (identifier)
+                (identifier)))
+            (razor_template
+              (element)))
+          (switch_expression_arm
+            (discard)
+            (null_literal)))))))
