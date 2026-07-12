@@ -14206,6 +14206,23 @@
       "type": "PATTERN",
       "value": "[^<>&@.(\\s]([^<>&@]*[^<>&@\\s])?"
     },
+    "_parenthesized_razor_implicit_expression": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "razor_implicit_expression"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
     "razor_attribute_value": {
       "type": "SEQ",
       "members": [
@@ -14483,6 +14500,10 @@
                   "content": {
                     "type": "CHOICE",
                     "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_parenthesized_razor_implicit_expression"
+                      },
                       {
                         "type": "SYMBOL",
                         "name": "_node"

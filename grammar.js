@@ -530,6 +530,9 @@ module.exports = grammar(CSHARP, {
       ),
     _html_text: (_) => /[^<>&@.(\s]([^<>&@]*[^<>&@\s])?/,
 
+    _parenthesized_razor_implicit_expression: ($) =>
+      seq("(", $.razor_implicit_expression, ")"),
+
     razor_attribute_value: ($) =>
       seq(
         '"',
@@ -591,7 +594,17 @@ module.exports = grammar(CSHARP, {
         ),
         choice(
           "/>",
-          seq(">", repeat(choice($._node, $._html_text)), $._end_tag),
+          seq(
+            ">",
+            repeat(
+              choice(
+                $._parenthesized_razor_implicit_expression,
+                $._node,
+                $._html_text,
+              ),
+            ),
+            $._end_tag,
+          ),
         ),
       ),
   },
