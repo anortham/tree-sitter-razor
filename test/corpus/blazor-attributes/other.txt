@@ -1,5 +1,5 @@
 ==============================
-Generic component type attributes remain RED after 07eab9c
+Component type parameters emit C# type nodes
 ==============================
 
 <FluentSelect TOption="string" TValue="string" />
@@ -16,6 +16,33 @@ Generic component type attributes remain RED after 07eab9c
         (predefined_type)))))
 
 ==============================
+Qualified and generic component type parameters emit C# type nodes
+==============================
+
+<Comp TValue="Foo.Bar" TItems="List<string>" Value="model.Value" />
+
+---
+
+(compilation_unit
+  (element
+    (component_attribute
+      (component_attribute_value
+        (qualified_name
+          (identifier)
+          (identifier))))
+    (component_attribute
+      (component_attribute_value
+        (generic_name
+          (identifier)
+          (type_argument_list
+            (predefined_type)))))
+    (component_attribute
+      (component_attribute_value
+        (member_access_expression
+          (identifier)
+          (identifier))))))
+
+==============================
 Custom rendermode directive
 ==============================
 
@@ -27,6 +54,31 @@ Custom rendermode directive
   (razor_rendermode_directive
     (razor_rendermode
       (identifier))))
+
+==============================
+Rendermode directives use expression-shaped children
+==============================
+
+@rendermode InteractiveServer
+@rendermode @PageRenderMode
+@rendermode RenderMode.InteractiveAuto
+
+---
+
+
+(compilation_unit
+  (razor_rendermode_directive
+    (razor_rendermode
+      (identifier)))
+  (razor_rendermode_directive
+    (razor_rendermode
+      (razor_implicit_expression
+        (identifier))))
+  (razor_rendermode_directive
+    (razor_rendermode
+      (member_access_expression
+        (identifier)
+        (identifier)))))
 
 ==============================
 Explicit rendermode directive

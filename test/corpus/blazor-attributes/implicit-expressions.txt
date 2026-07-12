@@ -70,7 +70,7 @@ Component value typeof member access
             (identifier)))))))
 
 ==============================
-Component value bare identifier covered by 07eab9c
+Component value bare identifier
 ==============================
 
 <InputText Value="currentValue" />

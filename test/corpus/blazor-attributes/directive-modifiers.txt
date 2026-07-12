@@ -1,5 +1,5 @@
 ==============================
-Event preventDefault modifier covered by 07eab9c
+Event preventDefault modifier
 ==============================
 
 <form @onsubmit="LookupAsync" @onsubmit:preventDefault></form>
@@ -15,6 +15,42 @@ Event preventDefault modifier covered by 07eab9c
     (razor_html_attribute
       (razor_attribute_name
         (razor_attribute_modifier)))))
+
+==============================
+Bind format modifier
+==============================
+
+<input @bind="value" @bind:format="yyyy-MM-dd" />
+
+---
+
+(compilation_unit
+  (element
+    (razor_html_attribute
+      (razor_attribute_name)
+      (razor_attribute_value
+        (identifier)))
+    (razor_html_attribute
+      (razor_attribute_name
+        (razor_attribute_modifier))
+      (razor_attribute_value
+        (razor_attribute_text)))))
+
+==============================
+Event stopPropagation modifier
+==============================
+
+<button @onclick:stopPropagation="true"></button>
+
+---
+
+(compilation_unit
+  (element
+    (razor_html_attribute
+      (razor_attribute_name
+        (razor_attribute_modifier))
+      (razor_attribute_value
+        (boolean_literal)))))
 
 ==============================
 Bind event modifier

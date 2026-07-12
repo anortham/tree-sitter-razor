@@ -43,7 +43,7 @@ razor attribute values
                   (argument_list))))))))))
 
 ======
-CSharp in HTML attribute - String(Semantic Highlighting does the rest)
+Component attribute lambda expression
 ======
    <GridColumn SortKeySelector="item => item.Integration.Id">
       </GridColumn>
@@ -52,7 +52,14 @@ CSharp in HTML attribute - String(Semantic Highlighting does the rest)
 (compilation_unit
   (element
     (component_attribute
-      (component_attribute_value))))
+      (component_attribute_value
+        (lambda_expression
+          (implicit_parameter)
+          (member_access_expression
+            (member_access_expression
+              (identifier)
+              (identifier))
+            (identifier)))))))
 
 ======
 HTML Attribute of empty string
@@ -145,6 +152,47 @@ Mixed text and Razor expression in HTML attribute
           (string_literal
             (string_literal_content))
           (string_literal))))))
+
+======
+HTML attribute values mix text and expressions in any position
+======
+<div data-a="@x post" data-b="pre @x" data-c="pre @x post @y"></div>
+---
+
+(compilation_unit
+  (element
+    (razor_implicit_expression
+      (identifier))
+    (razor_implicit_expression
+      (identifier))
+    (razor_implicit_expression
+      (identifier))
+    (razor_implicit_expression
+      (identifier))))
+
+======
+Parenthesized inline HTML text can surround Razor expressions
+======
+<div>(optional)</div>
+<div>(@x remaining)</div>
+<div>(see @x)</div>
+<div>@(x + 1)</div>
+---
+
+(compilation_unit
+  (element)
+  (element
+    (razor_implicit_expression
+      (identifier)))
+  (element
+    (razor_implicit_expression
+      (identifier)))
+  (element
+    (razor_explicit_expression
+      (parenthesized_expression
+        (binary_expression
+          (identifier)
+          (integer_literal))))))
 
 ======
 Component attribute value with bare identifier
