@@ -1,5 +1,5 @@
 ==============================
-Generic component type attributes covered by 07eab9c
+Generic component type attributes remain RED after 07eab9c
 ==============================
 
 <FluentSelect TOption="string" TValue="string" />
