@@ -1190,6 +1190,11 @@
     "fields": {}
   },
   {
+    "type": "at_template",
+    "named": false,
+    "fields": {}
+  },
+  {
     "type": "at_try",
     "named": false,
     "fields": {}
@@ -5824,6 +5829,14 @@
         {
           "type": "modifier",
           "named": true
+        },
+        {
+          "type": "razor_explicit_expression",
+          "named": true
+        },
+        {
+          "type": "razor_implicit_expression",
+          "named": true
         }
       ]
     }
@@ -7205,7 +7218,25 @@
   {
     "type": "razor_rendermode",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "razor_explicit_expression",
+          "named": true
+        },
+        {
+          "type": "razor_implicit_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "razor_rendermode_directive",
@@ -7534,6 +7565,21 @@
     }
   },
   {
+    "type": "razor_template",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "razor_try",
     "named": true,
     "fields": {},
@@ -7637,23 +7683,21 @@
         "required": true,
         "types": [
           {
-            "type": "alias_qualified_name",
-            "named": true
-          },
-          {
-            "type": "generic_name",
-            "named": true
-          },
-          {
             "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "qualified_name",
             "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "type_parameter_constraints_clause",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -8241,6 +8285,10 @@
         },
         {
           "type": "pattern",
+          "named": true
+        },
+        {
+          "type": "razor_template",
           "named": true
         },
         {
@@ -9091,11 +9139,31 @@
     "named": false
   },
   {
+    "type": ":after",
+    "named": false
+  },
+  {
     "type": ":culture",
     "named": false
   },
   {
+    "type": ":event",
+    "named": false
+  },
+  {
+    "type": ":format",
+    "named": false
+  },
+  {
+    "type": ":get",
+    "named": false
+  },
+  {
     "type": ":preventDefault",
+    "named": false
+  },
+  {
+    "type": ":set",
     "named": false
   },
   {
@@ -9749,6 +9817,10 @@
   },
   {
     "type": "remove",
+    "named": false
+  },
+  {
+    "type": "rendermode",
     "named": false
   },
   {

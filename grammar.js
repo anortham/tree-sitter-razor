@@ -175,7 +175,8 @@ module.exports = grammar(CSHARP, {
     razor_typeparam_directive: ($) =>
       seq(
         alias(seq($._razor_marker, "typeparam"), "at_typeparam"),
-        field("name", $._name),
+        field("name", $.identifier),
+        optional($.type_parameter_constraints_clause),
       ),
     razor_inject_directive: ($) =>
       seq(
@@ -192,8 +193,26 @@ module.exports = grammar(CSHARP, {
         alias(seq($._razor_marker, "rendermode"), "at_rendermode"),
         $.razor_rendermode,
       ),
-    razor_rendermode: (_) =>
-      choice("InteractiveServer", "InteractiveWebAssembly", "InteractiveAuto"),
+    razor_rendermode: ($) =>
+      choice(
+        "InteractiveServer",
+        "InteractiveWebAssembly",
+        "InteractiveAuto",
+        $.razor_explicit_expression,
+        $.razor_implicit_expression,
+        $.identifier,
+      ),
+
+    switch_expression_arm: ($) =>
+      seq(
+        $.pattern,
+        optional($.when_clause),
+        "=>",
+        choice($.expression, $.razor_template),
+      ),
+
+    razor_template: ($) =>
+      seq(alias($._razor_marker, "at_template"), $.element),
 
     _taghelper_target: ($) =>
       seq(
@@ -453,13 +472,23 @@ module.exports = grammar(CSHARP, {
             token(prec(10, /on[a-z]+/i)),
             "key",
             "ref",
+            "rendermode",
           ),
           optional($.razor_attribute_modifier),
         ),
       ),
 
     razor_attribute_modifier: (_) =>
-      choice(":culture", ":preventDefault", ":stopPropagation"),
+      choice(
+        ":culture",
+        ":preventDefault",
+        ":stopPropagation",
+        ":event",
+        ":format",
+        ":get",
+        ":set",
+        ":after",
+      ),
 
     html_comment: ($) => seq("<!--", optional($._razor_comment_text), "-->"),
     _html_comment_text: (_) => repeat1(/.|\n|\r/),
@@ -502,7 +531,16 @@ module.exports = grammar(CSHARP, {
     _html_text: (_) => /[^<>&@.(\s]([^<>&@]*[^<>&@\s])?/,
 
     razor_attribute_value: ($) =>
-      seq('"', optional($.modifier), $.expression, '"'),
+      seq(
+        '"',
+        optional($.modifier),
+        choice(
+          $.razor_explicit_expression,
+          $.razor_implicit_expression,
+          $.expression,
+        ),
+        '"',
+      ),
 
     _html_attribute: ($) =>
       seq($._html_attribute_name, "=", $._html_attribute_value),

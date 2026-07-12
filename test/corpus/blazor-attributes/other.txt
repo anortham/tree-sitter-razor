@@ -45,8 +45,7 @@ Explicit rendermode directive
             (identifier)
             (argument_list
               (argument
-                (name_colon
-                  (identifier))
+                (identifier)
                 (boolean_literal)))))))))
 
 ==============================
@@ -63,7 +62,7 @@ Custom component rendermode attribute
       (razor_attribute_name)
       (razor_attribute_value
         (razor_implicit_expression
-          (identifier)))))))
+          (identifier))))))
 
 ==============================
 Constrained type parameter
@@ -80,7 +79,8 @@ Constrained type parameter
       (identifier)
       (type_parameter_constraint
         (identifier))
-      (constructor_constraint))))
+      (type_parameter_constraint
+        (constructor_constraint)))))
 
 ==============================
 Render fragment literal in switch expression
@@ -98,7 +98,7 @@ Render fragment literal in switch expression
 
 (compilation_unit
   (razor_block
-    (local_function_statement
+    (method_declaration
       (nullable_type
         (identifier))
       (identifier)
