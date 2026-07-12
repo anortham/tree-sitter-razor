@@ -5815,6 +5815,11 @@
     }
   },
   {
+    "type": "razor_attribute_text",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "razor_attribute_value",
     "named": true,
     "fields": {},
@@ -9789,10 +9794,6 @@
   },
   {
     "type": "raw_string_start",
-    "named": true
-  },
-  {
-    "type": "razor_attribute_text",
     "named": true
   },
   {

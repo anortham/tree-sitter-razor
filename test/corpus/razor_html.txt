@@ -43,7 +43,7 @@ razor attribute values
                   (argument_list))))))))))
 
 ======
-Component attribute lambda expression
+Bare component lambda stays opaque without component schema
 ======
    <GridColumn SortKeySelector="item => item.Integration.Id">
       </GridColumn>
@@ -52,14 +52,7 @@ Component attribute lambda expression
 (compilation_unit
   (element
     (component_attribute
-      (component_attribute_value
-        (lambda_expression
-          (implicit_parameter)
-          (member_access_expression
-            (member_access_expression
-              (identifier)
-              (identifier))
-            (identifier)))))))
+      (component_attribute_value))))
 
 ======
 HTML Attribute of empty string
@@ -156,7 +149,7 @@ Mixed text and Razor expression in HTML attribute
 ======
 HTML attribute values mix text and expressions in any position
 ======
-<div data-a="@x post" data-b="pre @x" data-c="pre @x post @y"></div>
+<div data-a="@x post" data-b="pre @x" data-c="pre @x post @y" data-d="@action.Class post"></div>
 ---
 
 (compilation_unit
@@ -168,7 +161,27 @@ HTML attribute values mix text and expressions in any position
     (razor_implicit_expression
       (identifier))
     (razor_implicit_expression
-      (identifier))))
+      (identifier))
+    (razor_implicit_expression
+      (member_access_expression
+        (identifier)
+        (identifier)))))
+
+======
+HTML attribute expression can contain a quoted argument
+======
+<button aria-pressed="@AriaPressed("In Progress")"></button>
+---
+
+(compilation_unit
+  (element
+    (razor_implicit_expression
+      (invocation_expression
+        (identifier)
+        (argument_list
+          (argument
+            (string_literal
+              (string_literal_content))))))))
 
 ======
 Parenthesized inline HTML text can surround Razor expressions
@@ -228,6 +241,25 @@ Component attribute with multi-word string literal stays opaque
 
 (compilation_unit
   (element
+    (component_attribute
+      (component_attribute_value))))
+
+======
+Component static values accept digits and punctuation
+======
+<Comp Label="Observation date 1" Placeholder="e.g. MD, DO, NP" Width="170px" Id="observer-edit-date-1" Hint="Search..." />
+---
+
+(compilation_unit
+  (element
+    (component_attribute
+      (component_attribute_value))
+    (component_attribute
+      (component_attribute_value))
+    (component_attribute
+      (component_attribute_value))
+    (component_attribute
+      (component_attribute_value))
     (component_attribute
       (component_attribute_value))))
 

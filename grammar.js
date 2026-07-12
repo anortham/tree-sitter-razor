@@ -12,6 +12,11 @@ const CSHARP = require("tree-sitter-c-sharp/grammar").default;
 module.exports = grammar(CSHARP, {
   name: "razor",
 
+  externals: ($, previous) => [
+    ...previous,
+    $._html_attribute_tail_text,
+  ],
+
   extras: ($) => [$.razor_comment, $.comment, /\s+/],
 
   conflicts: ($, o) => [
@@ -505,16 +510,51 @@ module.exports = grammar(CSHARP, {
     _component_type_attribute_value: ($) =>
       seq('"', prec.dynamic(3, $.type), '"'),
     _html_attribute_value: ($) =>
-      seq(
-        '"',
-        repeat(
-          choice(
-            $.razor_explicit_expression,
-            $.razor_implicit_expression,
-            token(prec(1, /[^"@.]([^"@]*[^"@])?/)),
+      choice(
+        seq(
+          '"',
+          repeat(
+            choice(
+              $.razor_explicit_expression,
+              $.razor_implicit_expression,
+            ),
+          ),
+          '"',
+        ),
+        prec.dynamic(
+          1,
+          seq(
+            '"',
+            token(prec(1, /[^"@]+/)),
+            repeat(
+              choice(
+                $.razor_explicit_expression,
+                $.razor_implicit_expression,
+                $._html_attribute_tail_text,
+              ),
+            ),
+            '"',
           ),
         ),
-        '"',
+        prec.dynamic(
+          2,
+          seq(
+            '"',
+            choice(
+              $.razor_explicit_expression,
+              $.razor_implicit_expression,
+            ),
+            $._html_attribute_tail_text,
+            repeat(
+              choice(
+                $.razor_explicit_expression,
+                $.razor_implicit_expression,
+                $._html_attribute_tail_text,
+              ),
+            ),
+            '"',
+          ),
+        ),
       ),
     _html_text: (_) => /[^<>&@.(\s]([^<>&@]*[^<>&@\s])?/,
     _parenthesized_html_text: (_) =>
@@ -559,11 +599,7 @@ module.exports = grammar(CSHARP, {
           ),
           '"',
         ),
-        seq(
-          '"',
-          /[A-Za-z][A-Za-z0-9]*( [A-Za-z][A-Za-z0-9]*)+/,
-          '"',
-        ),
+        seq('"', /[^"@]+/, '"'),
       ),
 
     component_attribute: ($) =>
@@ -573,11 +609,8 @@ module.exports = grammar(CSHARP, {
           optional(
             seq(
               "=",
-              choice(
-                alias(
-                  $._component_type_attribute_value,
-                  $.component_attribute_value,
-                ),
+              alias(
+                $._component_type_attribute_value,
                 $.component_attribute_value,
               ),
             ),

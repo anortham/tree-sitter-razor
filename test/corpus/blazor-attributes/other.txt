@@ -16,7 +16,7 @@ Component type parameters emit C# type nodes
         (predefined_type)))))
 
 ==============================
-Qualified and generic component type parameters emit C# type nodes
+Component type parameters are typed while non-type values stay opaque
 ==============================
 
 <Comp TValue="Foo.Bar" TItems="List<string>" Value="model.Value" />
@@ -37,10 +37,7 @@ Qualified and generic component type parameters emit C# type nodes
           (type_argument_list
             (predefined_type)))))
     (component_attribute
-      (component_attribute_value
-        (member_access_expression
-          (identifier)
-          (identifier))))))
+      (component_attribute_value))))
 
 ==============================
 Custom rendermode directive
