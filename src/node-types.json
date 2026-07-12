@@ -2135,6 +2135,18 @@
         {
           "type": "expression",
           "named": true
+        },
+        {
+          "type": "razor_explicit_expression",
+          "named": true
+        },
+        {
+          "type": "razor_implicit_expression",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
         }
       ]
     }

@@ -116,7 +116,7 @@ Component value collection expression
                               (identifier)
                               (identifier)))))
                       (identifier))
-                    (argument_list))))))))))
+                    (argument_list)))))))))))
 
 ==============================
 Component value object creation
@@ -160,9 +160,11 @@ Component value interpolated string
               (interpolation_start)
               (string_content)
               (interpolation
+                (interpolation_brace)
                 (member_access_expression
                   (identifier)
-                  (identifier))))))))))
+                  (identifier))
+                (interpolation_brace)))))))))
 
 ==============================
 Component value binary expression

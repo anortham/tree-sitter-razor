@@ -471,16 +471,33 @@ module.exports = grammar(CSHARP, {
     _boolean_html_attribute: (_) => /[a-z][a-zA-Z0-9-:]*/,
     _component_attribute_name: (_) => /[A-Z][a-zA-Z0-9-:]*/,
     _html_attribute_value: ($) =>
-      seq(
-        '"',
-        repeat(
-          choice(
-            $.razor_explicit_expression,
-            $.razor_implicit_expression,
-            /[^"@]+/,
+      choice(
+        seq(
+          '"',
+          repeat(
+            choice(
+              $.razor_explicit_expression,
+              $.razor_implicit_expression,
+              /[^"@]+/,
+            ),
+          ),
+          '"',
+        ),
+        prec.dynamic(
+          1,
+          seq(
+            '"',
+            token(prec(1, /[^"@]+/)),
+            repeat(
+              choice(
+                $.razor_explicit_expression,
+                $.razor_implicit_expression,
+                token(prec(-1, /[^"@]+/)),
+              ),
+            ),
+            '"',
           ),
         ),
-        '"',
       ),
     _html_text: (_) => /[^<>&@.(\s]([^<>&@]*[^<>&@\s])?/,
 
@@ -493,7 +510,16 @@ module.exports = grammar(CSHARP, {
     component_attribute_value: ($) =>
       choice(
         token(prec(20, '""')),
-        seq('"', prec.dynamic(2, $.expression), '"'),
+        seq(
+          '"',
+          choice(
+            $.razor_explicit_expression,
+            $.razor_implicit_expression,
+            prec.dynamic(2, $.expression),
+            prec.dynamic(2, $.type),
+          ),
+          '"',
+        ),
         seq('"', /[^"@]+/, '"'),
       ),
 
