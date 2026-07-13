@@ -56,4 +56,27 @@ mod tests {
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading Razor parser");
     }
+
+    #[test]
+    fn test_parses_mixed_razor_document() {
+        let mut parser = tree_sitter::Parser::new();
+        parser
+            .set_language(&super::LANGUAGE.into())
+            .expect("Error loading Razor parser");
+
+        let source = r#"@page
+<EditForm Model="@model"><InputDate @bind-Value="model.Date" /></EditForm>"#;
+        let tree = parser.parse(source, None).expect("Razor parse failed");
+        let root = tree.root_node();
+
+        assert_eq!(root.kind(), "compilation_unit");
+        assert!(!root.has_error(), "unexpected parse errors: {root}");
+    }
+
+    #[test]
+    fn test_loads_packaged_resources() {
+        assert!(!super::NODE_TYPES.trim().is_empty());
+        tree_sitter::Query::new(&super::LANGUAGE.into(), super::HIGHLIGHTS_QUERY)
+            .expect("Error loading Razor highlights query");
+    }
 }
