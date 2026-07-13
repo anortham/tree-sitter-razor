@@ -204,3 +204,26 @@ Foreach in an if with a wrapped element
     (element))
    (razor_else
     (element)))))
+
+======
+Inline implicit expression in an if body
+======
+
+<div>@if (condition) { @Field("x", value) }</div>
+
+---
+
+(compilation_unit
+  (element
+    (razor_if
+      (razor_condition
+        (identifier))
+      (razor_implicit_expression
+        (invocation_expression
+          (identifier)
+          (argument_list
+            (argument
+              (string_literal
+                (string_literal_content)))
+            (argument
+              (identifier))))))))

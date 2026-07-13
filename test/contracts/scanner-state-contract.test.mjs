@@ -51,6 +51,17 @@ test("implicit expression ends before next-line text whitespace", () => {
   assert.deepEqual(expression?.endPosition, { row: 0, column: 12 });
 });
 
+test("implicit expression ends before a Razor block closing brace", () => {
+  const source = '<div>@if (condition) { @Field("x", value) }</div>';
+  const tree = createParser().parse(source);
+  const conditional = findNamedNode(tree.rootNode, "razor_if");
+  const expression = findNamedNode(tree.rootNode, "razor_implicit_expression");
+
+  assert.equal(tree.rootNode.hasError, false);
+  assert.equal(conditional?.text, '@if (condition) { @Field("x", value) }');
+  assert.equal(expression?.text, '@Field("x", value)');
+});
+
 test("parses a 256-byte tag name", () => {
   const name = "x".repeat(256);
   const tree = createParser().parse(`<${name}>content</${name}>`);
