@@ -84,11 +84,7 @@ static bool tag_name_is_valid(const TagName *name) {
 
 static bool tag_name_equals_literal(const TagName *name, const char *literal) {
     size_t length = strlen(literal);
-    if (name->size != length) return false;
-    for (unsigned i = 0; i < name->size; i++) {
-        if (towlower((unsigned char)name->contents[i]) != towlower((unsigned char)literal[i])) return false;
-    }
-    return true;
+    return name->size == length && memcmp(name->contents, literal, length) == 0;
 }
 
 static bool tag_names_equal(const TagName *left, const TagName *right) {

@@ -332,6 +332,21 @@ bind-Value directive attribute value with member access
   (element))
 
 ====================
+Capitalized components do not collide with HTML void or raw tags
+====================
+<Input></Input>
+<Script><span>x</span></Script>
+<Style><div>x</div></Style>
+---
+
+(compilation_unit
+  (element)
+  (element
+    (element))
+  (element
+    (element)))
+
+====================
 .NET 10 nested component fixture - https://learn.microsoft.com/aspnet/core/blazor/components/?view=aspnetcore-10.0 - dotnet/AspNetCore.Docs commit 71011a30140248dffcc6a757d435670365f523d2
 ====================
 <Heading />
