@@ -314,7 +314,8 @@ bool tree_sitter_razor_external_scanner_scan(void *payload, TSLexer *lexer, cons
             advance(lexer);
         } while (!lexer->eof(lexer) && lexer->lookahead != '\n' && lexer->lookahead != '\r' &&
                  lexer->lookahead != '<' && lexer->lookahead != '>' && lexer->lookahead != '"' &&
-                 lexer->lookahead != '\'' && lexer->lookahead != '@' && lexer->lookahead != ')');
+                 lexer->lookahead != '\'' && lexer->lookahead != '@' && lexer->lookahead != '&' &&
+                 lexer->lookahead != ')');
         lexer->result_symbol = RAZOR_IMPLICIT_END;
         return true;
     }
