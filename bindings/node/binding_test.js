@@ -1,9 +1,16 @@
 /// <reference types="node" />
 
-const assert = require("node:assert");
+const assert = require("node:assert/strict");
 const { test } = require("node:test");
 
-test("can load grammar", () => {
+test("parses mixed Razor without errors", () => {
   const parser = new (require("tree-sitter"))();
-  assert.doesNotThrow(() => parser.setLanguage(require(".")));
+  parser.setLanguage(require("."));
+
+  const tree = parser.parse(
+    '@page\n<EditForm Model="@model"><InputDate @bind-Value="model.Date" /></EditForm>',
+  );
+
+  assert.equal(tree.rootNode.type, "compilation_unit");
+  assert.equal(tree.rootNode.hasError, false);
 });
