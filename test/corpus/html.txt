@@ -9,6 +9,73 @@ Simple HTML
 (compilation_unit
   (element))
 
+====================
+Doctype entities and ordinary punctuation text
+====================
+<!DOCTYPE html>
+Hello, Razor! &amp; &#169; &#x1F600; (ready).
+---
+
+(compilation_unit
+  (doctype)
+  (html_entity)
+  (html_entity)
+  (html_entity))
+
+====================
+Qualified component and attribute forms
+====================
+<Admin.Layout.Card enabled title='single value' data-id=item-42></Admin.Layout.Card>
+---
+
+(compilation_unit
+  (element))
+
+====================
+HTML void elements without slash
+====================
+<div>before<br>middle<img src=image.png disabled>after<input checked></div>
+---
+
+(compilation_unit
+  (element
+    (element)
+    (element)
+    (element)))
+
+====================
+Raw script and style text
+====================
+<script>if (a < b && c > d) { value = "</not-script>"; }</script>
+<style>.card > span::before { content: "<&>"; }</style>
+---
+
+(compilation_unit
+  (element)
+  (element))
+
+====================
+Mismatched end tag is rejected
+====================
+<div></span>
+---
+
+(compilation_unit
+  (ERROR))
+
+====================
+Missing quote recovers before valid sibling
+====================
+<div title="broken>
+</div>
+<p>valid sibling</p>
+---
+
+(compilation_unit
+  (element
+    (MISSING """))
+  (element))
+
 ===========
 HTML with attributes
 ===========

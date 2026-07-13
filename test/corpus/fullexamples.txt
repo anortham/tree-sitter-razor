@@ -59,6 +59,68 @@ Counter Page
           (postfix_unary_expression
             (identifier)))))))
 
+====================
+Nested tag and string scanner stress
+====================
+<div><div><div data-value='one'><span>before</span></div></div></div>
+<Panel Enabled class='before'></Panel>
+<Panel Enabled data-state=after class="after"></Panel>
+
+@code {
+    string raw = """<div data-value="@notRazor"></div>""";
+    string interpolated = $"""<span>{value}</span>""";
+    string regular = $"<p>{value}</p>";
+}
+---
+
+(compilation_unit
+  (element
+    (element
+      (element
+        (element))))
+  (element
+    (component_attribute))
+  (element
+    (component_attribute))
+  (razor_block
+    (field_declaration
+      (variable_declaration
+        (predefined_type)
+        (variable_declarator
+          (identifier)
+          (raw_string_literal
+            (raw_string_start)
+            (raw_string_content)
+            (raw_string_end)))))
+    (local_declaration_statement
+      (variable_declaration
+        (predefined_type)
+        (variable_declarator
+          (identifier)
+          (interpolated_string_expression
+            (interpolation_start)
+            (interpolation_quote)
+            (string_content)
+            (interpolation
+              (interpolation_brace)
+              (identifier)
+              (interpolation_brace))
+            (string_content)
+            (interpolation_quote)))))
+    (local_declaration_statement
+      (variable_declaration
+        (predefined_type)
+        (variable_declarator
+          (identifier)
+          (interpolated_string_expression
+            (interpolation_start)
+            (string_content)
+            (interpolation
+              (interpolation_brace)
+              (identifier)
+              (interpolation_brace))
+            (string_content)))))))
+
 =====
 Weather Forecast
 =====

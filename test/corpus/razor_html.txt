@@ -290,3 +290,147 @@ bind-Value directive attribute value with member access
         (member_access_expression
           (identifier)
           (identifier))))))
+
+====================
+.NET 11 DisplayName fixture - https://github.com/dotnet/AspNetCore.Docs/blob/71011a30140248dffcc6a757d435670365f523d2/aspnetcore/release-notes/aspnetcore-11/includes/blazor.md
+====================
+<label>
+    <DisplayName For="@(() => Model!.ProductionDate)" />
+    <InputDate @bind-Value="Model!.ProductionDate" />
+</label>
+---
+
+(compilation_unit
+  (element
+    (element
+      (component_attribute
+        (component_attribute_value
+          (razor_explicit_expression
+            (parenthesized_expression
+              (lambda_expression
+                (parameter_list)
+                (member_access_expression
+                  (postfix_unary_expression
+                    (identifier))
+                  (identifier))))))))
+    (element
+      (razor_html_attribute
+        (razor_attribute_name)
+        (razor_attribute_value
+          (member_access_expression
+            (postfix_unary_expression
+              (identifier))
+            (identifier)))))))
+
+====================
+.NET 11 BasePath fixture - https://github.com/dotnet/AspNetCore.Docs/blob/71011a30140248dffcc6a757d435670365f523d2/aspnetcore/release-notes/aspnetcore-11/includes/blazor.md
+====================
+<BasePath />
+---
+
+(compilation_unit
+  (element))
+
+====================
+.NET 10 nested component fixture - https://learn.microsoft.com/aspnet/core/blazor/components/?view=aspnetcore-10.0 - dotnet/AspNetCore.Docs commit 71011a30140248dffcc6a757d435670365f523d2
+====================
+<Heading />
+---
+
+(compilation_unit
+  (element))
+
+====================
+.NET 11 EnvironmentBoundary fixture - https://github.com/dotnet/AspNetCore.Docs/blob/71011a30140248dffcc6a757d435670365f523d2/aspnetcore/release-notes/aspnetcore-11/includes/blazor.md
+====================
+<EnvironmentBoundary Include="Development,Staging">
+    <p>Pre-production environment</p>
+</EnvironmentBoundary>
+---
+
+(compilation_unit
+  (element
+    (component_attribute
+      (component_attribute_value))
+    (element)))
+
+====================
+.NET 11 MathML fixture - https://github.com/dotnet/AspNetCore.Docs/blob/71011a30140248dffcc6a757d435670365f523d2/aspnetcore/release-notes/aspnetcore-11/includes/blazor.md
+====================
+<math>
+    <mrow>
+        <mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mi>y</mi></mfrac>
+    </mrow>
+</math>
+---
+
+(compilation_unit
+  (element
+    (element
+      (element)
+      (element)
+      (element
+        (element)
+        (element)))))
+
+====================
+Incremental scanner stress with nested tags and edited attributes
+====================
+<div><div><div data-value='one'><span>before</span></div></div></div>
+<Panel Enabled class='before'></Panel>
+<Panel Enabled data-state=after class="after"></Panel>
+
+@code {
+    string raw = """<div data-value="@notRazor"></div>""";
+    string interpolated = $"""<span>{value}</span>""";
+    string regular = $"<p>{value}</p>";
+}
+---
+
+(compilation_unit
+  (element
+    (element
+      (element
+        (element))))
+  (element
+    (component_attribute))
+  (element
+    (component_attribute))
+  (razor_block
+    (field_declaration
+      (variable_declaration
+        (predefined_type)
+        (variable_declarator
+          (identifier)
+          (raw_string_literal
+            (raw_string_start)
+            (raw_string_content)
+            (raw_string_end)))))
+    (local_declaration_statement
+      (variable_declaration
+        (predefined_type)
+        (variable_declarator
+          (identifier)
+          (interpolated_string_expression
+            (interpolation_start)
+            (interpolation_quote)
+            (string_content)
+            (interpolation
+              (interpolation_brace)
+              (identifier)
+              (interpolation_brace))
+            (string_content)
+            (interpolation_quote)))))
+    (local_declaration_statement
+      (variable_declaration
+        (predefined_type)
+        (variable_declarator
+          (identifier)
+          (interpolated_string_expression
+            (interpolation_start)
+            (string_content)
+            (interpolation
+              (interpolation_brace)
+              (identifier)
+              (interpolation_brace))
+            (string_content)))))))

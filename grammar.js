@@ -15,6 +15,13 @@ module.exports = grammar(CSHARP, {
   externals: ($, previous) => [
     ...previous,
     $._html_attribute_tail_text,
+    $._start_tag_name,
+    $._void_tag_name,
+    $._script_start_tag_name,
+    $._style_start_tag_name,
+    $._end_tag_name,
+    $._self_closing_tag_delimiter,
+    $._raw_text,
   ],
 
   extras: ($) => [$.razor_comment, $.comment, /\s+/],
@@ -58,27 +65,28 @@ module.exports = grammar(CSHARP, {
   rules: {
     compilation_unit: ($) =>
       seq(
-        repeat(
-          choice(
-            $.shebang_directive, // this is to make sharing highlights easier
-            $.razor_page_directive,
-            $.razor_using_directive,
-            $.razor_model_directive,
-            $.razor_rendermode_directive,
-            $.razor_inject_directive,
-            $.razor_implements_directive,
-            $.razor_layout_directive,
-            $.razor_inherits_directive,
-            $.razor_attribute_directive,
-            $.razor_typeparam_directive,
-            $.razor_namespace_directive,
-            $.razor_preservewhitespace_directive,
-            $.razor_addtaghelper_directive,
-            $.razor_removetaghelper_directive,
-            $.razor_taghelperprefix_directive,
-          ),
-        ),
+        repeat($._directive),
         repeat(choice($._node, $.razor_block)),
+      ),
+
+    _directive: ($) =>
+      choice(
+        $.shebang_directive,
+        $.razor_page_directive,
+        $.razor_using_directive,
+        $.razor_model_directive,
+        $.razor_rendermode_directive,
+        $.razor_inject_directive,
+        $.razor_implements_directive,
+        $.razor_layout_directive,
+        $.razor_inherits_directive,
+        $.razor_attribute_directive,
+        $.razor_typeparam_directive,
+        $.razor_namespace_directive,
+        $.razor_preservewhitespace_directive,
+        $.razor_addtaghelper_directive,
+        $.razor_removetaghelper_directive,
+        $.razor_taghelperprefix_directive,
       ),
 
     _identifier_token: (_) =>
@@ -126,6 +134,9 @@ module.exports = grammar(CSHARP, {
           $.razor_lock,
           $.element,
           $.html_comment,
+          $.doctype,
+          $.html_entity,
+          $._html_text,
         ),
       ),
 
@@ -500,8 +511,10 @@ module.exports = grammar(CSHARP, {
     _html_comment_text: (_) => repeat1(/.|\n|\r/),
 
     // HTML Base Definitions
-    _tag_name: (_) => /[a-zA-Z0-9-:]+/,
-    _end_tag: ($) => seq("</", $._tag_name, ">"),
+    _tag_name: (_) => /[a-zA-Z0-9_:-]+(?:\.[a-zA-Z0-9_:-]+)*/,
+    doctype: (_) => token(seq(/<!DOCTYPE/i, /\s+/, /[^>]+/, ">")),
+    html_entity: (_) =>
+      token(/&(?:[A-Za-z][A-Za-z0-9]+|#[0-9]+|#x[0-9A-Fa-f]+);/),
     _html_attribute_name: (_) => /[a-z][a-zA-Z0-9-:]*/,
     _boolean_html_attribute: (_) => /[a-z][a-zA-Z0-9-:]*/,
     _component_attribute_name: (_) => /[A-Z][a-zA-Z0-9-:]*/,
@@ -511,6 +524,8 @@ module.exports = grammar(CSHARP, {
       seq('"', prec.dynamic(3, $.type), '"'),
     _html_attribute_value: ($) =>
       choice(
+        seq("'", optional(token.immediate(/[^'\r\n<>@]+/)), "'"),
+        $._unquoted_html_attribute_value,
         seq(
           '"',
           repeat(
@@ -525,7 +540,7 @@ module.exports = grammar(CSHARP, {
           1,
           seq(
             '"',
-            token(prec(1, /[^"@]+/)),
+            token(prec(1, /[^\r\n<>"@]+/)),
             repeat(
               choice(
                 $.razor_explicit_expression,
@@ -556,7 +571,8 @@ module.exports = grammar(CSHARP, {
           ),
         ),
       ),
-    _html_text: (_) => /[^<>&@.(\s]([^<>&@]*[^<>&@\s])?/,
+    _unquoted_html_attribute_value: (_) => token(/[^\s"'=<>`@]+/),
+    _html_text: (_) => token(prec(-1, /[^<>&@\s]([^<>&@]*[^<>&@\s])?/)),
     _parenthesized_html_text: (_) =>
       token(prec(1, /[^<>&@().\s]([^<>&@()]*[^<>&@()\s])?/)),
     _parenthesized_html_content: ($) =>
@@ -661,39 +677,73 @@ module.exports = grammar(CSHARP, {
         ),
       ),
 
-    element: ($) =>
+    _html_attributes: ($) =>
+      repeat1(
+        choice(
+          $._html_attribute,
+          $._boolean_html_attribute,
+          $.razor_html_attribute,
+          $.component_attribute,
+        ),
+      ),
+
+    _element_content: ($) =>
+      repeat1(
+        choice(
+          $._parenthesized_html_content,
+          $._node,
+        ),
+      ),
+
+    _normal_element: ($) =>
       seq(
         "<",
-        $._tag_name,
-        optional(
-          repeat(
-            prec.left(
-              seq(
-                choice(
-                  $._html_attribute,
-                  $._boolean_html_attribute,
-                  $.razor_html_attribute,
-                  $.component_attribute,
-                ),
-                optional(" "),
-              ),
-            ),
-          ),
-        ),
+        $._start_tag_name,
+        optional($._html_attributes),
+        ">",
+        optional($._element_content),
+        "</",
+        $._end_tag_name,
+        ">",
+      ),
+
+    _self_closing_element: ($) =>
+      seq(
+        "<",
+        $._start_tag_name,
+        optional($._html_attributes),
+        $._self_closing_tag_delimiter,
+      ),
+
+    _void_element: ($) =>
+      seq(
+        "<",
+        $._void_tag_name,
+        optional($._html_attributes),
+        choice(">", "/>"),
+      ),
+
+    _raw_text_element: ($) =>
+      seq(
+        "<",
         choice(
-          "/>",
-          seq(
-            ">",
-            repeat(
-              choice(
-                $._parenthesized_html_content,
-                $._node,
-                $._html_text,
-              ),
-            ),
-            $._end_tag,
-          ),
+          $._script_start_tag_name,
+          $._style_start_tag_name,
         ),
+        optional($._html_attributes),
+        ">",
+        optional($._raw_text),
+        "</",
+        $._end_tag_name,
+        ">",
+      ),
+
+    element: ($) =>
+      choice(
+        $._normal_element,
+        $._self_closing_element,
+        $._void_element,
+        $._raw_text_element,
       ),
   },
 });
