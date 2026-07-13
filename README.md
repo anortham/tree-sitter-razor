@@ -1,6 +1,6 @@
 # tree-sitter-razor
 
-[![CI][ci]](https://github.com/tris203/tree-sitter-razor/actions/workflows/ci.yml)
+[![CI][ci]](https://github.com/anortham/tree-sitter-razor/actions/workflows/ci.yml)
 [![discord][discord]](https://discord.gg/w7nTvsVJhm)
 [![matrix][matrix]](https://matrix.to/#/#tree-sitter-chat:matrix.org)
 
@@ -13,10 +13,12 @@ A Tree-sitter parser for razor files.
 
 ## References
 
-<!-- NOTE: add the grammar's references here -->
+[Razor syntax reference for ASP.NET Core 10](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-10.0)
 
-[Razor syntax reference for ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-9.0)
+[ASP.NET Core 10 Razor components](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-10.0)
 
-[ci]: https://img.shields.io/github/actions/workflow/status/tris203/tree-sitter-razor/ci.yml?logo=github&label=CI
+[ASP.NET Core in .NET 11 preview release notes](https://learn.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-11)
+
+[ci]: https://img.shields.io/github/actions/workflow/status/anortham/tree-sitter-razor/ci.yml?logo=github&label=CI
 [discord]: https://img.shields.io/discord/1063097320771698699?logo=discord&label=discord
 [matrix]: https://img.shields.io/matrix/tree-sitter-chat%3Amatrix.org?logo=matrix&label=matrix

@@ -6,7 +6,8 @@
       "path": ".",
       "scope": "source.razor",
       "file-types": [
-        "razor"
+        "razor",
+        "cshtml"
       ],
       "injection-regex": "^razor$",
       "highlights": [
@@ -16,14 +17,14 @@
   ],
   "metadata": {
     "links": {
-      "repository": "https://github.com/tris203/tree-sitter-razor"
+      "repository": "https://github.com/anortham/tree-sitter-razor"
     },
     "version": "0.1.1",
     "license": "MIT",
     "authors": [
       {
-        "name": "tris203",
-        "email": "admin@snappeh.com"
+        "name": "Alan Northam",
+        "email": "anortham@gmail.com"
       }
     ]
   }

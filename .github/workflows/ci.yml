@@ -6,20 +6,46 @@ on:
       - master
       - main
     paths:
+      - .github/workflows/**
+      - CMakeLists.txt
+      - Cargo.lock
+      - Cargo.toml
+      - Makefile
+      - Package.swift
+      - binding.gyp
+      - bindings/**
+      - go.mod
+      - go.sum
       - grammar.js
+      - package-lock.json
+      - package.json
+      - pyproject.toml
+      - queries/**
+      - setup.py
       - src/**
       - test/**
-      - bindings/**
-      - binding.gyp
-      - .github/workflows/ci.yml
+      - tree-sitter.json
   pull_request:
     paths:
+      - .github/workflows/**
+      - CMakeLists.txt
+      - Cargo.lock
+      - Cargo.toml
+      - Makefile
+      - Package.swift
+      - binding.gyp
+      - bindings/**
+      - go.mod
+      - go.sum
       - grammar.js
+      - package-lock.json
+      - package.json
+      - pyproject.toml
+      - queries/**
+      - setup.py
       - src/**
       - test/**
-      - bindings/**
-      - binding.gyp
-      - .github/workflows/ci.yml
+      - tree-sitter.json
 
 concurrency:
   group: ${{github.workflow}}-${{github.ref}}
@@ -38,13 +64,22 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-14]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@v2
-      - name: Run tests
-        uses: tree-sitter/parser-test-action@v2
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
+          node-version: "22"
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@1868a545ffb91bdc221d14a168b5b6d8de4a28b3 # v2
+      - name: Run tests
+        uses: tree-sitter/parser-test-action@aba4a3de737f86f8ce83be38166a1ab521d4c960 # v2
+        with:
+          test-node: ${{runner.os == 'Linux'}}
+          node-version: "22"
+          test-python: ${{runner.os == 'Linux'}}
+          test-go: ${{runner.os == 'Linux'}}
           test-rust: ${{runner.os == 'Linux'}}
+          test-swift: ${{runner.os == 'macOS'}}
   fuzz:
     name: Fuzz scanner
     runs-on: ubuntu-latest
@@ -53,15 +88,30 @@ jobs:
       github.event.head_commit.message != 'Initial commit'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
       - name: Check for scanner changes
         id: scanner-check
         shell: sh
+        env:
+          EVENT_NAME: ${{github.event_name}}
+          PR_BASE_SHA: ${{github.event.pull_request.base.sha}}
+          PUSH_BEFORE_SHA: ${{github.event.before}}
         run: |-
-          {
-            test -f src/scanner.c && ! git diff --quiet HEAD^ -- "$_" &&
-            printf 'changed=true\n' || printf 'changed=false\n'
-          } >> "$GITHUB_OUTPUT"
+          base_sha="$PUSH_BEFORE_SHA"
+          if [ "$EVENT_NAME" = pull_request ]; then
+            base_sha="$PR_BASE_SHA"
+          fi
+          changed=false
+          if test -f src/scanner.c; then
+            if test -z "$base_sha" || ! git cat-file -e "$base_sha^{commit}"; then
+              changed=true
+            elif ! git diff --quiet "$base_sha" HEAD -- src/scanner.c; then
+              changed=true
+            fi
+          fi
+          printf 'changed=%s\n' "$changed" >> "$GITHUB_OUTPUT"
       - name: Run fuzzer
-        uses: tree-sitter/fuzz-action@v4
+        uses: tree-sitter/fuzz-action@6a1dcff00aefd038ba418bd63732a9add4901266 # v4
         if: steps.scanner-check.outputs.changed == 'true'

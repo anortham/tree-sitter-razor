@@ -2,11 +2,14 @@
   "name": "tree-sitter-razor",
   "version": "0.1.1",
   "description": "Razor grammar for tree-sitter",
-  "repository": "github:tree-sitter/tree-sitter-razor",
+  "repository": "https://github.com/anortham/tree-sitter-razor",
   "license": "MIT",
   "author": {
-    "name": "Yes",
-    "email": "No@lol.com"
+    "name": "Alan Northam",
+    "email": "anortham@gmail.com"
+  },
+  "engines": {
+    "node": ">=22 <23"
   },
   "main": "bindings/node",
   "types": "bindings/node",

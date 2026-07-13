@@ -2,12 +2,12 @@
 name = "tree-sitter-razor"
 description = "Razor grammar for tree-sitter"
 version = "0.1.1"
-authors = ["Tristan Knight <admin@snappeh.com>"]
+authors = ["Alan Northam <anortham@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 keywords = ["incremental", "parsing", "tree-sitter", "razor"]
 categories = ["parsing", "text-editors"]
-repository = "https://github.com/tree-sitter/tree-sitter-razor"
+repository = "https://github.com/anortham/tree-sitter-razor"
 edition = "2021"
 autoexamples = false
 
