@@ -169,7 +169,8 @@ static bool scan_markup_tag(Scanner *scanner, TSLexer *lexer, const bool *valid_
     }
 
     if (valid_symbols[END_TAG_NAME]) {
-        if (scanner->tag_stack.size > 0 && tag_names_equal(array_back(&scanner->tag_stack), &name)) {
+        const TagName *open_name = scanner->tag_stack.size > 0 ? array_back(&scanner->tag_stack) : NULL;
+        if (open_name && (open_name->size == 0 || tag_names_equal(open_name, &name))) {
             pop_tag(scanner);
             array_delete(&name);
             lexer->result_symbol = END_TAG_NAME;
@@ -215,7 +216,7 @@ unsigned tree_sitter_razor_external_scanner_serialize(void *payload, char *buffe
     Scanner *scanner = (Scanner *)payload;
 
     if (scanner->interpolation_stack.size > UINT8_MAX ||
-        scanner->interpolation_stack.size * 4 + 3 > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+        scanner->interpolation_stack.size * 4 + 6 > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
         return 0;
     }
 
@@ -232,25 +233,22 @@ unsigned tree_sitter_razor_external_scanner_serialize(void *payload, char *buffe
         buffer[size++] = (char)interpolation.string_type;
     }
 
-    unsigned tag_count_index = size++;
-    unsigned first_tag = scanner->tag_stack.size;
-    unsigned tag_bytes = 0;
-    while (first_tag > 0 && scanner->tag_stack.size - first_tag < UINT8_MAX) {
-        unsigned name_length = scanner->tag_stack.contents[first_tag - 1].size;
-        if (name_length > UINT8_MAX) name_length = UINT8_MAX;
-        if (size + tag_bytes + name_length + 1 > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) break;
-        tag_bytes += name_length + 1;
-        first_tag--;
-    }
+    uint16_t serialized_tag_count = 0;
+    uint16_t tag_count = scanner->tag_stack.size > UINT16_MAX ? UINT16_MAX : scanner->tag_stack.size;
+    unsigned serialized_tag_count_index = size;
+    size += sizeof(serialized_tag_count);
+    memcpy(&buffer[size], &tag_count, sizeof(tag_count));
+    size += sizeof(tag_count);
 
-    buffer[tag_count_index] = (char)(scanner->tag_stack.size - first_tag);
-    for (unsigned i = first_tag; i < scanner->tag_stack.size; i++) {
+    for (; serialized_tag_count < tag_count; serialized_tag_count++) {
+        unsigned i = serialized_tag_count;
         unsigned name_length = scanner->tag_stack.contents[i].size;
-        if (name_length > UINT8_MAX) name_length = UINT8_MAX;
+        if (name_length > UINT8_MAX || size + name_length + 1 > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) break;
         buffer[size++] = (char)name_length;
         memcpy(&buffer[size], scanner->tag_stack.contents[i].contents, name_length);
         size += name_length;
     }
+    memcpy(&buffer[serialized_tag_count_index], &serialized_tag_count, sizeof(serialized_tag_count));
 
     return size;
 }
@@ -264,10 +262,10 @@ void tree_sitter_razor_external_scanner_deserialize(void *payload, const char *b
     unsigned size = 0;
 
     if (length > 0) {
-        if (length < 3) return;
+        if (length < 6) return;
         scanner->quote_count = (unsigned char)buffer[size++];
         unsigned interpolation_count = (unsigned char)buffer[size++];
-        if (size + interpolation_count * 4 + 1 > length) return;
+        if (size + interpolation_count * 4 + 4 > length) return;
         scanner->interpolation_stack.size = interpolation_count;
         array_reserve(&scanner->interpolation_stack, scanner->interpolation_stack.size);
 
@@ -280,9 +278,15 @@ void tree_sitter_razor_external_scanner_deserialize(void *payload, const char *b
             scanner->interpolation_stack.contents[i] = interpolation;
         }
 
-        unsigned tag_count = (unsigned char)buffer[size++];
+        uint16_t serialized_tag_count = 0;
+        uint16_t tag_count = 0;
+        memcpy(&serialized_tag_count, &buffer[size], sizeof(serialized_tag_count));
+        size += sizeof(serialized_tag_count);
+        memcpy(&tag_count, &buffer[size], sizeof(tag_count));
+        size += sizeof(tag_count);
+        if (serialized_tag_count > tag_count) return;
         array_reserve(&scanner->tag_stack, tag_count);
-        for (unsigned i = 0; i < tag_count; i++) {
+        for (unsigned i = 0; i < serialized_tag_count; i++) {
             if (size >= length) {
                 clear_tag_stack(scanner);
                 return;
@@ -297,6 +301,10 @@ void tree_sitter_razor_external_scanner_deserialize(void *payload, const char *b
             name.size = name_length;
             memcpy(name.contents, &buffer[size], name_length);
             size += name_length;
+            array_push(&scanner->tag_stack, name);
+        }
+        for (unsigned i = serialized_tag_count; i < tag_count; i++) {
+            TagName name = array_new();
             array_push(&scanner->tag_stack, name);
         }
     }

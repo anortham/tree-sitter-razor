@@ -1,4 +1,4 @@
-module github.com/tree-sitter/tree-sitter-razor
+module github.com/anortham/tree-sitter-razor
 
 go 1.23
 

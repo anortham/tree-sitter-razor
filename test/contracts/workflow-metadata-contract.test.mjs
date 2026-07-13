@@ -6,17 +6,29 @@ const root = new URL("../../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 
 test("CI and package metadata match supported bindings and fork identity", async () => {
-  const [ci, publish, regenerate, cargo, packageText, pyproject, config, readme] =
-    await Promise.all([
-      read(".github/workflows/ci.yml"),
-      read(".github/workflows/publish.yml"),
-      read(".github/workflows/regnerate.yml"),
-      read("Cargo.toml"),
-      read("package.json"),
-      read("pyproject.toml"),
-      read("tree-sitter.json"),
-      read("README.md"),
-    ]);
+  const [
+    ci,
+    publish,
+    regenerate,
+    cargo,
+    goMod,
+    goBindingTest,
+    packageText,
+    pyproject,
+    config,
+    readme,
+  ] = await Promise.all([
+    read(".github/workflows/ci.yml"),
+    read(".github/workflows/publish.yml"),
+    read(".github/workflows/regnerate.yml"),
+    read("Cargo.toml"),
+    read("go.mod"),
+    read("bindings/go/binding_test.go"),
+    read("package.json"),
+    read("pyproject.toml"),
+    read("tree-sitter.json"),
+    read("README.md"),
+  ]);
 
   const packageJson = JSON.parse(packageText);
   const treeSitter = JSON.parse(config);
@@ -93,6 +105,13 @@ test("CI and package metadata match supported bindings and fork identity", async
     "tree-sitter metadata uses the fork URL",
   );
   check(readme.includes("github.com/anortham/tree-sitter-razor"), "README uses the fork URL");
+  const goModule = "github.com/anortham/tree-sitter-razor";
+  const goModuleDeclaration = goMod.split(/\r?\n/).find((line) => line.startsWith("module "));
+  check(goModuleDeclaration === `module ${goModule}`, "Go module uses the fork identity");
+  check(
+    goBindingTest.includes(`"${goModule}/bindings/go"`),
+    "Go binding test imports the fork module",
+  );
 
   const maintainer = { name: "Alan Northam", email: "anortham@gmail.com" };
   check(

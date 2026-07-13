@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
-	tree_sitter_razor "github.com/tree-sitter/tree-sitter-razor/bindings/go"
+	tree_sitter_razor "github.com/anortham/tree-sitter-razor/bindings/go"
 )
 
 func TestCanParseMixedRazor(t *testing.T) {

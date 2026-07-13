@@ -133,7 +133,7 @@ module.exports = grammar(CSHARP, {
           $.razor_do_while,
           $.razor_try,
           $.explicit_line_transition,
-          $.razor_implicit_expression,
+          $._razor_implicit_expression,
           $.razor_explicit_expression,
           $.razor_section,
           $.razor_compound_using,
@@ -244,7 +244,7 @@ module.exports = grammar(CSHARP, {
         1,
         choice(
           $.razor_explicit_expression,
-          $.razor_implicit_expression,
+          $._razor_implicit_expression,
           $.member_access_expression,
           $.identifier,
         ),
@@ -385,8 +385,10 @@ module.exports = grammar(CSHARP, {
       seq(
         alias($._razor_marker, "at_implicit"),
         prec.left($.expression),
-        optional($._razor_implicit_end),
       ),
+
+    _razor_implicit_expression: ($) =>
+      seq($.razor_implicit_expression, optional($._razor_implicit_end)),
 
     razor_lock: ($) =>
       seq(
@@ -654,7 +656,7 @@ module.exports = grammar(CSHARP, {
           repeat(
             choice(
               $.razor_explicit_expression,
-              $.razor_implicit_expression,
+              $._razor_implicit_expression,
             ),
           ),
           '"',
@@ -667,7 +669,7 @@ module.exports = grammar(CSHARP, {
             repeat(
               choice(
                 $.razor_explicit_expression,
-                $.razor_implicit_expression,
+                $._razor_implicit_expression,
                 $._html_attribute_tail_text,
               ),
             ),
@@ -680,13 +682,13 @@ module.exports = grammar(CSHARP, {
             '"',
             choice(
               $.razor_explicit_expression,
-              $.razor_implicit_expression,
+              $._razor_implicit_expression,
             ),
             $._html_attribute_tail_text,
             repeat(
               choice(
                 $.razor_explicit_expression,
-                $.razor_implicit_expression,
+                $._razor_implicit_expression,
                 $._html_attribute_tail_text,
               ),
             ),
@@ -717,7 +719,7 @@ module.exports = grammar(CSHARP, {
         optional($.modifier),
         choice(
           $.razor_explicit_expression,
-          $.razor_implicit_expression,
+          $._razor_implicit_expression,
           $.expression,
         ),
         '"',
@@ -733,7 +735,7 @@ module.exports = grammar(CSHARP, {
           '"',
           choice(
             $.razor_explicit_expression,
-            $.razor_implicit_expression,
+            $._razor_implicit_expression,
             prec.dynamic(2, $.expression),
           ),
           '"',

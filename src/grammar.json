@@ -12188,7 +12188,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "razor_implicit_expression"
+            "name": "_razor_implicit_expression"
           },
           {
             "type": "SYMBOL",
@@ -12743,7 +12743,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "razor_implicit_expression"
+            "name": "_razor_implicit_expression"
           },
           {
             "type": "SYMBOL",
@@ -13354,6 +13354,15 @@
             "type": "SYMBOL",
             "name": "expression"
           }
+        }
+      ]
+    },
+    "_razor_implicit_expression": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "razor_implicit_expression"
         },
         {
           "type": "CHOICE",
@@ -14644,7 +14653,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "razor_implicit_expression"
+                    "name": "_razor_implicit_expression"
                   }
                 ]
               }
@@ -14687,7 +14696,7 @@
                     },
                     {
                       "type": "SYMBOL",
-                      "name": "razor_implicit_expression"
+                      "name": "_razor_implicit_expression"
                     },
                     {
                       "type": "SYMBOL",
@@ -14722,7 +14731,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "razor_implicit_expression"
+                    "name": "_razor_implicit_expression"
                   }
                 ]
               },
@@ -14741,7 +14750,7 @@
                     },
                     {
                       "type": "SYMBOL",
-                      "name": "razor_implicit_expression"
+                      "name": "_razor_implicit_expression"
                     },
                     {
                       "type": "SYMBOL",
@@ -14849,7 +14858,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "razor_implicit_expression"
+              "name": "_razor_implicit_expression"
             },
             {
               "type": "SYMBOL",
@@ -14910,7 +14919,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "razor_implicit_expression"
+                  "name": "_razor_implicit_expression"
                 },
                 {
                   "type": "PREC_DYNAMIC",
