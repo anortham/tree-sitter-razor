@@ -15202,6 +15202,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "razor_block"
+          },
+          {
+            "type": "SYMBOL",
             "name": "_node"
           }
         ]

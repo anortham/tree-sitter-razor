@@ -816,6 +816,7 @@ module.exports = grammar(CSHARP, {
       repeat1(
         choice(
           $._parenthesized_html_content,
+          $.razor_block,
           $._node,
         ),
       ),

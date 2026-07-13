@@ -165,6 +165,26 @@ Nested block
     (razor_block)))
 
 ==================
+Anonymous Code Block in HTML Element
+==================
+
+<div>@{ var value = 1; }<span>@value</span></div>
+---
+
+(compilation_unit
+  (element
+    (razor_block
+      (field_declaration
+        (variable_declaration
+          (implicit_type)
+          (variable_declarator
+            (identifier)
+            (integer_literal)))))
+    (element
+      (razor_implicit_expression
+        (identifier)))))
+
+==================
 Templated delegate initializer
 ==================
 

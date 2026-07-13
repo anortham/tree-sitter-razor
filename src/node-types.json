@@ -2600,6 +2600,10 @@
           "named": true
         },
         {
+          "type": "razor_block",
+          "named": true
+        },
+        {
           "type": "razor_comment",
           "named": true
         },
