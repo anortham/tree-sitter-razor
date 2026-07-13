@@ -90,3 +90,129 @@ Top level explicit line transition
 (compilation_unit
   (explicit_line_transition
     (element)))
+
+=======
+Whitespace after page transition is invalid
+=======
+
+@ page
+
+------
+
+(compilation_unit
+  (ERROR
+    (preproc_arg)))
+
+=======
+Whitespace after control transition is invalid
+=======
+
+@ if (value)
+{
+    <span>Invalid</span>
+}
+
+------
+
+(compilation_unit
+  (ERROR
+    (preproc_arg))
+  (element))
+
+=======
+Whitespace after explicit transition is invalid
+=======
+
+@ (value)
+
+------
+
+(compilation_unit
+  (ERROR
+    (preproc_arg)))
+
+=======
+.NET 11 NavLink RelativeToCurrentUri relative navigation
+Source: https://github.com/dotnet/AspNetCore.Docs/blob/71011a30140248dffcc6a757d435670365f523d2/aspnetcore/release-notes/aspnetcore-11/includes/blazor.md#navigateto-and-navlink-support-for-relative-navigation
+Commit: 71011a30140248dffcc6a757d435670365f523d2
+=======
+
+<NavLink href="configuration" RelativeToCurrentUri="true">Configuration</NavLink>
+
+------
+
+(compilation_unit
+  (element
+    (component_attribute
+      (component_attribute_value
+        (boolean_literal)))))
+
+=======
+.NET 11 async form validation
+Source: https://github.com/dotnet/AspNetCore.Docs/blob/71011a30140248dffcc6a757d435670365f523d2/aspnetcore/release-notes/aspnetcore-11/includes/blazor.md#asynchronous-form-validation-support
+Commit: 71011a30140248dffcc6a757d435670365f523d2
+=======
+
+<EditForm EditContext="editContext" OnSubmit="HandleSubmit">
+    <InputText @bind-Value="model.Username" />
+    @if (editContext.IsValidationPending(() => model.Username))
+    {
+        <span>Checking availability...</span>
+    }
+    <ValidationMessage For="() => model.Username" />
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    private async Task HandleSubmit() => await editContext.ValidateAsync();
+}
+
+------
+
+(compilation_unit
+  (element
+    (component_attribute
+      (component_attribute_value
+        (identifier)))
+    (component_attribute
+      (component_attribute_value
+        (identifier)))
+    (element
+      (razor_html_attribute
+        (razor_attribute_name)
+        (razor_attribute_value
+          (member_access_expression
+            (identifier)
+            (identifier)))))
+    (razor_if
+      (razor_condition
+        (invocation_expression
+          (member_access_expression
+            (identifier)
+            (identifier))
+          (argument_list
+            (argument
+              (lambda_expression
+                (parameter_list)
+                (member_access_expression
+                  (identifier)
+                  (identifier)))))))
+      (element))
+    (element
+      (component_attribute
+        (component_attribute_value)))
+    (element))
+  (razor_block
+    (method_declaration
+      (modifier)
+      (modifier)
+      (identifier)
+      (identifier)
+      (parameter_list)
+      (arrow_expression_clause
+        (await_expression
+          (invocation_expression
+            (member_access_expression
+              (identifier)
+              (identifier))
+            (argument_list)))))))

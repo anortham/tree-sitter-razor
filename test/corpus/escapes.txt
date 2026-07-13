@@ -9,3 +9,14 @@ Escape
 (compilation_unit
   (razor_escape
     (element)))
+
+==================
+Standalone escape
+==================
+
+@@
+
+---
+
+(compilation_unit
+  (razor_escape))

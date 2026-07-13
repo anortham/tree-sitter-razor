@@ -26,6 +26,8 @@ enum TokenType {
     END_TAG_NAME,
     SELF_CLOSING_TAG_DELIMITER,
     RAW_TEXT,
+    RAZOR_MARKER,
+    RAZOR_IMPLICIT_END,
 };
 
 typedef enum {
@@ -58,6 +60,21 @@ typedef struct {
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
 static inline void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
+
+static bool scan_razor_marker(TSLexer *lexer) {
+    if (lexer->lookahead != '@') return false;
+
+    advance(lexer);
+    lexer->mark_end(lexer);
+
+    if (!lexer->lookahead || iswspace(lexer->lookahead) || lexer->lookahead == '@' || lexer->lookahead == '*' ||
+        lexer->lookahead == ':' || lexer->lookahead == '{' || lexer->lookahead == '<') {
+        return false;
+    }
+
+    lexer->result_symbol = RAZOR_MARKER;
+    return true;
+}
 
 static inline bool is_tag_name_character(int32_t character) {
     return (character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') ||
@@ -291,6 +308,21 @@ bool tree_sitter_razor_external_scanner_scan(void *payload, TSLexer *lexer, cons
     uint8_t brace_advanced = 0;
     uint8_t quote_count = 0;
     bool did_advance = false;
+
+    if (valid_symbols[RAZOR_IMPLICIT_END] && iswspace(lexer->lookahead)) {
+        do {
+            advance(lexer);
+        } while (!lexer->eof(lexer) && lexer->lookahead != '\n' && lexer->lookahead != '\r' &&
+                 lexer->lookahead != '<' && lexer->lookahead != '>' && lexer->lookahead != '"' &&
+                 lexer->lookahead != '\'' && lexer->lookahead != '@' && lexer->lookahead != ')');
+        lexer->result_symbol = RAZOR_IMPLICIT_END;
+        return true;
+    }
+
+    if (valid_symbols[RAZOR_MARKER]) {
+        while (iswspace(lexer->lookahead)) skip(lexer);
+        if (lexer->lookahead == '@') return scan_razor_marker(lexer);
+    }
 
     if (valid_symbols[OPT_SEMI] && valid_symbols[INTERPOLATION_REGULAR_START]) {
         return false;

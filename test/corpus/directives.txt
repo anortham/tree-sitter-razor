@@ -399,3 +399,42 @@ tagHelperPrefix
       (string_literal_content)))
   (razor_taghelperprefix_directive
     (identifier)))
+
+===
+Bare page directive
+===
+@page
+---
+
+(compilation_unit
+  (razor_page_directive))
+
+===
+Qualified and wildcard tag helper targets
+===
+@addTagHelper Company.Web.TagHelpers.WidgetTagHelper, Company.Web
+@removeTagHelper Company.Web.TagHelpers.*, Company.Web
+---
+
+(compilation_unit
+  (razor_addtaghelper_directive
+    (qualified_name
+      (qualified_name
+        (qualified_name
+          (identifier)
+          (identifier))
+        (identifier))
+      (identifier))
+    (qualified_name
+      (identifier)
+      (identifier)))
+  (razor_removetaghelper_directive
+    (qualified_name
+      (qualified_name
+        (identifier)
+        (identifier))
+      (identifier))
+    (taghelper_wildcard)
+    (qualified_name
+      (identifier)
+      (identifier))))

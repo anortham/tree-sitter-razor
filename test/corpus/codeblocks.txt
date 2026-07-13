@@ -147,3 +147,57 @@ Code Block with HTML
     (element
       (razor_implicit_expression
         (identifier)))))
+
+==================
+Nested block
+==================
+
+@if (ready)
+{
+    @{}
+}
+---
+
+(compilation_unit
+  (razor_if
+    (razor_condition
+      (identifier))
+    (razor_block)))
+
+==================
+Templated delegate initializer
+==================
+
+@{
+    RenderFragment template = @<span>Hello</span>;
+}
+---
+
+(compilation_unit
+  (razor_block
+    (field_declaration
+      (variable_declaration
+        (identifier)
+        (variable_declarator
+          (identifier)
+          (razor_template
+            (element)))))))
+
+==================
+Templated delegate argument
+==================
+
+@{
+    Render(@<strong>World</strong>);
+}
+---
+
+(compilation_unit
+  (razor_block
+    (expression_statement
+      (invocation_expression
+        (identifier)
+        (argument_list
+          (argument
+            (razor_template
+              (element))))))))

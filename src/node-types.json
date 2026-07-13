@@ -817,6 +817,10 @@
         {
           "type": "expression",
           "named": true
+        },
+        {
+          "type": "razor_template",
+          "named": true
         }
       ]
     }
@@ -1073,146 +1077,6 @@
         ]
       }
     }
-  },
-  {
-    "type": "at_addtaghelper",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_attribute",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_block",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_do",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_explicit",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_for",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_foreach",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_if",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_implements",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_implicit",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_inherits",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_inject",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_layout",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_lock",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_model",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_namespace",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_page",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_preservewhitespace",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_removetaghelper",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_rendermode",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_section",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_switch",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_taghelperprefix",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_template",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_try",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_typeparam",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_using",
-    "named": false,
-    "fields": {}
-  },
-  {
-    "type": "at_while",
-    "named": false,
-    "fields": {}
   },
   {
     "type": "attribute",
@@ -4915,15 +4779,11 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "integer_literal",
-          "named": true
-        },
-        {
-          "type": "lvalue_expression",
-          "named": true
-        },
-        {
-          "type": "non_lvalue_expression",
           "named": true
         },
         {
@@ -5785,11 +5645,23 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
+          "type": "alias_qualified_name",
+          "named": true
+        },
+        {
+          "type": "generic_name",
+          "named": true
+        },
+        {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "qualified_name",
           "named": true
         },
         {
@@ -6010,6 +5882,10 @@
           "named": true
         },
         {
+          "type": "razor_block",
+          "named": true
+        },
+        {
           "type": "razor_comment",
           "named": true
         },
@@ -6112,6 +5988,10 @@
         },
         {
           "type": "html_entity",
+          "named": true
+        },
+        {
+          "type": "razor_block",
           "named": true
         },
         {
@@ -6229,6 +6109,10 @@
           "named": true
         },
         {
+          "type": "razor_block",
+          "named": true
+        },
+        {
           "type": "razor_comment",
           "named": true
         },
@@ -6328,6 +6212,10 @@
           "named": true
         },
         {
+          "type": "razor_block",
+          "named": true
+        },
+        {
           "type": "razor_comment",
           "named": true
         },
@@ -6423,6 +6311,10 @@
           "named": true
         },
         {
+          "type": "razor_block",
+          "named": true
+        },
+        {
           "type": "razor_comment",
           "named": true
         },
@@ -6495,7 +6387,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "element",
@@ -6549,6 +6441,10 @@
         },
         {
           "type": "html_entity",
+          "named": true
+        },
+        {
+          "type": "razor_block",
           "named": true
         },
         {
@@ -6644,6 +6540,10 @@
           },
           {
             "type": "html_entity",
+            "named": true
+          },
+          {
+            "type": "razor_block",
             "named": true
           },
           {
@@ -6774,6 +6674,10 @@
           },
           {
             "type": "html_entity",
+            "named": true
+          },
+          {
+            "type": "razor_block",
             "named": true
           },
           {
@@ -6927,6 +6831,10 @@
         },
         {
           "type": "html_entity",
+          "named": true
+        },
+        {
+          "type": "razor_block",
           "named": true
         },
         {
@@ -7155,6 +7063,10 @@
           "named": true
         },
         {
+          "type": "razor_block",
+          "named": true
+        },
+        {
           "type": "razor_comment",
           "named": true
         },
@@ -7266,7 +7178,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "string_literal",
@@ -7318,11 +7230,23 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
+          "type": "alias_qualified_name",
+          "named": true
+        },
+        {
+          "type": "generic_name",
+          "named": true
+        },
+        {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "qualified_name",
           "named": true
         },
         {
@@ -7412,6 +7336,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "razor_block",
           "named": true
         },
         {
@@ -7533,6 +7461,10 @@
           "named": true
         },
         {
+          "type": "razor_block",
+          "named": true
+        },
+        {
           "type": "razor_case_condition",
           "named": true
         },
@@ -7629,6 +7561,10 @@
         },
         {
           "type": "html_entity",
+          "named": true
+        },
+        {
+          "type": "razor_block",
           "named": true
         },
         {
@@ -7758,6 +7694,10 @@
         },
         {
           "type": "html_entity",
+          "named": true
+        },
+        {
+          "type": "razor_block",
           "named": true
         },
         {
@@ -7913,6 +7853,10 @@
         },
         {
           "type": "html_entity",
+          "named": true
+        },
+        {
+          "type": "razor_block",
           "named": true
         },
         {
@@ -9008,6 +8952,10 @@
           "named": true
         },
         {
+          "type": "razor_template",
+          "named": true
+        },
+        {
           "type": "tuple_pattern",
           "named": true
         }
@@ -9408,10 +9356,6 @@
     "named": false
   },
   {
-    "type": "@",
-    "named": false
-  },
-  {
     "type": "@*",
     "named": false
   },
@@ -9520,6 +9464,10 @@
     "named": false
   },
   {
+    "type": "at_explicit",
+    "named": false
+  },
+  {
     "type": "at_for",
     "named": false
   },
@@ -9533,6 +9481,10 @@
   },
   {
     "type": "at_implements",
+    "named": false
+  },
+  {
+    "type": "at_implicit",
     "named": false
   },
   {
@@ -9585,6 +9537,10 @@
   },
   {
     "type": "at_taghelperprefix",
+    "named": false
+  },
+  {
+    "type": "at_template",
     "named": false
   },
   {
