@@ -15,7 +15,7 @@ Repair the three confirmed review findings without widening the supported Node r
 
 ### Implicit-expression boundary
 
-`RAZOR_IMPLICIT_END` remains an external lookahead token so C# parsing stops before following markup text. The scanner marks the token end before advancing through lookahead. Tree-sitter can then use the lookahead to select the boundary without including whitespace or following text in `razor_implicit_expression`.
+`RAZOR_IMPLICIT_END` remains a consuming external lookahead token so C# parsing stops before following markup text. A hidden grammar wrapper owns that token after the public `razor_implicit_expression`, whose range contains only the Razor marker and C# expression. A zero-width external token was rejected after the mixed-attribute corpus proved it could not hand off to `_html_attribute_tail_text` at the same position.
 
 The caller-facing test parses real Razor through the Node binding and asserts the expression's text and end position for same-line and next-line markup.
 
@@ -39,7 +39,7 @@ Change the root module path and binding test import to `github.com/anortham/tree
 
 ## Architecture Quality
 
-**Affected modules:** `src/scanner.c`, generated parser sources only if generation changes them, Node contract tests, `go.mod`, Go binding tests, and the workflow metadata contract.
+**Affected modules:** `grammar.js`, `src/scanner.c`, generated parser sources, Node contract tests, `go.mod`, Go binding tests, and the workflow metadata contract.
 
 **Caller-facing interface:** Razor syntax-tree node ranges, HTML/Razor parse validity after scanner restoration, and the public Go import path.
 
@@ -47,19 +47,19 @@ Change the root module path and binding test import to `github.com/anortham/tree
 
 **Test surface:** All behavior is exercised through public parser bindings and the published module metadata rather than private scanner helpers.
 
-**Rejected shortcuts:** Consuming trailing text, truncating tag names, hashing names with collision risk, explicitly rejecting valid deep markup, widening Node support without a green dependency build, and documenting corruption instead of fixing it.
+**Rejected shortcuts:** Keeping the consuming boundary inside the named node, using a zero-width boundary that breaks mixed attributes, truncating tag names, hashing names with collision risk, explicitly rejecting valid deep markup, widening Node support without a green dependency build, and documenting corruption instead of fixing it.
 
 **Architecture risk:** Medium because scanner state and named-node ranges are shared public contracts.
 
 ## Acceptance Criteria
 
-- [ ] Same-line and next-line text remains outside `razor_implicit_expression`.
-- [ ] Existing implicit expressions still terminate before following Razor markup text.
-- [ ] A 256-byte tag name parses without `ERROR`.
-- [ ] At least 256 nested matching elements parse without `ERROR` in full and incremental parses.
-- [ ] Existing mismatched-tag recovery behavior remains intact.
-- [ ] The Go binding is addressable through `github.com/anortham/tree-sitter-razor/bindings/go`.
-- [ ] The metadata contract locks the Go module path to the fork identity.
-- [ ] Deterministic generation, corpus/highlights, all binding suites, packages, and workflow checks pass.
-- [ ] The certified Julie parser pin and verification ledger are updated to the repaired parser commit.
-- [ ] No push, tag, publication, deployment, or external-repository edit occurs.
+- [x] Same-line and next-line text remains outside `razor_implicit_expression`.
+- [x] Existing implicit expressions still terminate before following Razor markup text.
+- [x] A 256-byte tag name parses without `ERROR`.
+- [x] At least 256 nested matching elements parse without `ERROR` in full and incremental parses.
+- [x] Existing mismatched-tag recovery behavior remains intact.
+- [x] The Go binding is addressable through `github.com/anortham/tree-sitter-razor/bindings/go`.
+- [x] The metadata contract locks the Go module path to the fork identity.
+- [x] Deterministic generation, corpus/highlights, all binding suites, packages, and workflow checks pass.
+- [x] The certified Julie parser pin and verification ledger are updated to the repaired parser commit.
+- [x] No push, tag, publication, deployment, or external-repository edit occurs.
