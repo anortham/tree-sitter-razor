@@ -232,3 +232,21 @@ FluentUI autocomplete async dismiss callback documentation-only
                   (argument_list
                     (argument
                       (identifier))))))))))))
+
+==============================
+Component value mixes literal text and explicit expression
+==============================
+
+<ParameterChild Title="Set by @(panelData.Title)" />
+
+---
+
+(compilation_unit
+  (element
+    (component_attribute
+      (component_attribute_value
+        (razor_explicit_expression
+          (parenthesized_expression
+            (member_access_expression
+              (identifier)
+              (identifier))))))))

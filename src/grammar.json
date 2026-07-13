@@ -3183,8 +3183,17 @@
           "value": "=>"
         },
         {
-          "type": "SYMBOL",
-          "name": "expression"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "expression"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "razor_template"
+            }
+          ]
         }
       ]
     },
@@ -14568,6 +14577,10 @@
       "type": "PATTERN",
       "value": "[A-Z][a-zA-Z0-9-:]*"
     },
+    "_component_attribute_text": {
+      "type": "PATTERN",
+      "value": "[^\"@]+"
+    },
     "_component_type_attribute_name": {
       "type": "TOKEN",
       "content": {
@@ -14945,8 +14958,45 @@
               "value": "\""
             },
             {
-              "type": "PATTERN",
-              "value": "[^\"@]+"
+              "type": "SYMBOL",
+              "name": "_component_attribute_text"
+            },
+            {
+              "type": "REPEAT1",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "razor_explicit_expression"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_razor_implicit_expression"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_html_attribute_tail_text"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "STRING",
+              "value": "\""
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "\""
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_component_attribute_text"
             },
             {
               "type": "STRING",

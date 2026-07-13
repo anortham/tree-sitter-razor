@@ -258,6 +258,9 @@ module.exports = grammar(CSHARP, {
         choice($.expression, $.razor_template),
       ),
 
+    arrow_expression_clause: ($) =>
+      seq("=>", choice($.expression, $.razor_template)),
+
     variable_declarator: ($) =>
       seq(
         choice(field("name", $.identifier), $.tuple_pattern),
@@ -643,6 +646,7 @@ module.exports = grammar(CSHARP, {
     _html_attribute_name: (_) => /[a-z][a-zA-Z0-9-:]*/,
     _boolean_html_attribute: (_) => /[a-z][a-zA-Z0-9-:]*/,
     _component_attribute_name: (_) => /[A-Z][a-zA-Z0-9-:]*/,
+    _component_attribute_text: (_) => /[^"@]+/,
     _component_type_attribute_name: (_) =>
       token(prec(1, /T[A-Z][a-zA-Z0-9]*/)),
     _component_type_attribute_value: ($) =>
@@ -740,7 +744,19 @@ module.exports = grammar(CSHARP, {
           ),
           '"',
         ),
-        seq('"', /[^"@]+/, '"'),
+        seq(
+          '"',
+          $._component_attribute_text,
+          repeat1(
+            choice(
+              $.razor_explicit_expression,
+              $._razor_implicit_expression,
+              $._html_attribute_tail_text,
+            ),
+          ),
+          '"',
+        ),
+        seq('"', $._component_attribute_text, '"'),
       ),
 
     component_attribute: ($) =>

@@ -221,3 +221,24 @@ Templated delegate argument
           (argument
             (razor_template
               (element))))))))
+
+==============================
+Render fragment literal in arrow expression clause
+==============================
+
+@code {
+    private RenderFragment Fragment() => @<text>Hello</text>;
+}
+
+---
+
+(compilation_unit
+  (razor_block
+    (method_declaration
+      (modifier)
+      (identifier)
+      (identifier)
+      (parameter_list)
+      (arrow_expression_clause
+        (razor_template
+          (element))))))
