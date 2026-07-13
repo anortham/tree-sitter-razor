@@ -21,7 +21,7 @@
 - GREEN: `npx tree-sitter generate && npx tree-sitter test --stat total-only && node --test test/contracts/named-node-contract.test.mjs` passed with 145/145 corpus cases and 1/1 contract tests.
 - Focused directive, code-block, expression, escape, transition, component-member-access, render-mode, mixed-attribute, and parenthesized-inline-HTML cases pass.
 - Two consecutive generated-file hashes matched: `1298f9978301789fbf746e74be6787c2d8da7fe864d1285bc1c66476151482a0`.
-- Latest corpus throughput was 2189 bytes/ms; the named-node contract completed in about 50 ms.
+- Final corpus throughput was 2173 bytes/ms; the named-node contract completed in about 51 ms.
 
 ## Contract evidence
 
