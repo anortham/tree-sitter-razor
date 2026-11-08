@@ -39,4 +39,4 @@ corpus case `Commented Code Block` expected C# `comment` children and now expect
 | Corpus | `tree-sitter test` | 154/154, with four new cases: a comment first in an `@if` block, after an element in an `else` block, first in a `@foreach` block, and a comment that holds stars and at signs |
 | Minimal regression | `tree-sitter parse` on a 10-line component with `@* c *@` inside `@if` followed by `@code { … }` | `compilation_unit` with no `ERROR`; before the fix the root was `ERROR [0, 0] - [10, 0]` |
 | Real components | `tree-sitter parse` on ceres `ThemeDesigner.razor` (7b9bad2), `GallerySettingsPanel.razor` and `Pages.razor` (fa389b6) | `compilation_unit` roots; 3, 6, and 0 local `ERROR` nodes, the pre-existing recoveries around `@<span>` templates; before the fix each file was one `ERROR` |
-| Rust binding | `cargo test --locked` | see the julie-extractors pin commit |
+| Rust binding | `cargo test --locked` | 1 passed, 0 failed (the `bindings/rust/lib.rs` doctest loads the language) |
