@@ -123,7 +123,6 @@ module.exports = grammar(CSHARP, {
     _node: ($) =>
       prec.right(
         choice(
-          $.razor_comment,
           $.razor_escape,
           $.razor_if,
           $.razor_switch,

@@ -1456,10 +1456,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -1881,10 +1877,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -2605,10 +2597,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -5787,10 +5775,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -5894,10 +5878,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -5994,10 +5974,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -6115,10 +6091,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -6218,10 +6190,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -6314,10 +6282,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -6450,10 +6414,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -6546,10 +6506,6 @@
           },
           {
             "type": "razor_block",
-            "named": true
-          },
-          {
-            "type": "razor_comment",
             "named": true
           },
           {
@@ -6680,10 +6636,6 @@
           },
           {
             "type": "razor_block",
-            "named": true
-          },
-          {
-            "type": "razor_comment",
             "named": true
           },
           {
@@ -6837,10 +6789,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -7066,10 +7014,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -7345,10 +7289,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -7471,10 +7411,6 @@
           "named": true
         },
         {
-          "type": "razor_comment",
-          "named": true
-        },
-        {
           "type": "razor_compound_using",
           "named": true
         },
@@ -7567,10 +7503,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -7704,10 +7636,6 @@
         },
         {
           "type": "razor_catch",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {
@@ -7859,10 +7787,6 @@
         },
         {
           "type": "razor_block",
-          "named": true
-        },
-        {
-          "type": "razor_comment",
           "named": true
         },
         {

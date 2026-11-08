@@ -12157,10 +12157,6 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "razor_comment"
-          },
-          {
-            "type": "SYMBOL",
             "name": "razor_escape"
           },
           {
