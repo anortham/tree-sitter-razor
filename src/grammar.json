@@ -14355,35 +14355,23 @@
       }
     },
     "razor_comment": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "@*"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_razor_comment_text"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "*@"
-        }
-      ]
-    },
-    "_razor_comment_text": {
-      "type": "REPEAT1",
+      "type": "TOKEN",
       "content": {
-        "type": "PATTERN",
-        "value": ".|\\n|\\r"
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "@*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "([^*]|\\*+[^*@])*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\*+@"
+          }
+        ]
       }
     },
     "razor_attribute_name": {
@@ -14509,7 +14497,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_razor_comment_text"
+              "name": "_html_comment_text"
             },
             {
               "type": "BLANK"

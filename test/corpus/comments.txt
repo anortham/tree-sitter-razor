@@ -76,9 +76,7 @@ Commented Code Block
 ---
 
 (compilation_unit
-  (razor_comment
-    (comment)
-    (comment))
+  (razor_comment)
   (razor_block
     (comment)))
 
@@ -94,3 +92,93 @@ IMPORTANT
 (compilation_unit
   (element
     (html_comment)))
+
+==================
+Comment inside an if block
+==================
+
+@if (shown)
+{
+    @* The Razor compiler accepts a comment here. *@
+    <p>a</p>
+}
+
+@code {
+    private bool shown;
+}
+
+---
+
+(compilation_unit
+  (razor_if
+    (razor_condition
+      (identifier))
+    (razor_comment)
+    (element))
+  (razor_block
+    (field_declaration
+      (modifier)
+      (variable_declaration
+        (predefined_type)
+        (variable_declarator
+          (identifier))))))
+
+==================
+Comment after an element inside an else block
+==================
+
+@if (shown)
+{
+    <p>a</p>
+}
+else
+{
+    <p>b</p>
+    @* A note with "quotes"; and a semicolon. *@
+}
+
+---
+
+(compilation_unit
+  (razor_if
+    (razor_condition
+      (identifier))
+    (element)
+    (razor_else
+      (element)
+      (razor_comment))))
+
+==================
+Comment inside a foreach block
+==================
+
+@foreach (var item in items)
+{
+    @* c *@
+    <p>@item</p>
+}
+
+---
+
+(compilation_unit
+  (razor_foreach
+    (implicit_type)
+    (identifier)
+    (identifier)
+    (razor_comment)
+    (element
+      (razor_implicit_expression
+        (identifier)))))
+
+==================
+Comment that holds stars and at signs
+==================
+
+@* a * b ** c @ d **@
+<p>a</p>
+
+---
+
+(compilation_unit
+  (razor_comment)
+  (element))

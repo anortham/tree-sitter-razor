@@ -5957,12 +5957,6 @@
     }
   },
   {
-    "type": "razor_comment",
-    "named": true,
-    "extra": true,
-    "fields": {}
-  },
-  {
     "type": "razor_compound_using",
     "named": true,
     "fields": {},
@@ -9188,10 +9182,6 @@
     "named": false
   },
   {
-    "type": "*@",
-    "named": false
-  },
-  {
     "type": "+",
     "named": false
   },
@@ -9361,10 +9351,6 @@
   },
   {
     "type": "??=",
-    "named": false
-  },
-  {
-    "type": "@*",
     "named": false
   },
   {
@@ -9919,6 +9905,11 @@
   {
     "type": "razor_case_condition",
     "named": true
+  },
+  {
+    "type": "razor_comment",
+    "named": true,
+    "extra": true
   },
   {
     "type": "readonly",

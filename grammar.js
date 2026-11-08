@@ -604,8 +604,7 @@ module.exports = grammar(CSHARP, {
         ),
       ),
 
-    razor_comment: ($) => seq("@*", optional($._razor_comment_text), "*@"),
-    _razor_comment_text: (_) => repeat1(/.|\n|\r/),
+    razor_comment: (_) => token(seq("@*", /([^*]|\*+[^*@])*/, /\*+@/)),
     razor_attribute_name: ($) =>
       seq(
         $._razor_marker,
@@ -635,7 +634,7 @@ module.exports = grammar(CSHARP, {
         ":after",
       ),
 
-    html_comment: ($) => seq("<!--", optional($._razor_comment_text), "-->"),
+    html_comment: ($) => seq("<!--", optional($._html_comment_text), "-->"),
     _html_comment_text: (_) => repeat1(/.|\n|\r/),
 
     // HTML Base Definitions
